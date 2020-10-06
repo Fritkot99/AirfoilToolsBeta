@@ -2,7 +2,7 @@
 Blender addon to import and generate airfoils,
 
 author: Thibaut Francotte
-version: 0.1
+version: 0.3
 
 Disclaimer: this is a beta version, bugs may occur and more features will be added in future updates.
 
