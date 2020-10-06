@@ -112,6 +112,7 @@ def NACA5digits(digits, N, Distrib):
     reflexed_ind = int(Reflexed)
     
     p_loc = p_lst.index(round(camberloc, 2))
+    print("stuff", p_loc, camberloc)
     k = k_lst[reflexed_ind][p_loc]
     m = m_lst[reflexed_ind][p_loc]
     
