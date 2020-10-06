@@ -1,4 +1,4 @@
-# AirfoilTool
+# AirfoilTools
 Blender addon to import and generate airfoils,
 
 author: Thibaut Francotte
@@ -29,4 +29,4 @@ step 4: Enjoy!
 _________________________Documentation & tutorial_____________________
 
 A full documentation file is in progress, for now you can find information in the tutorial:
-"link will come"
+https://github.com/Fritkot99/AirfoilToolsBeta
