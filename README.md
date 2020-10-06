@@ -29,4 +29,4 @@ step 4: Enjoy!
 _________________________Documentation & tutorial_____________________
 
 A full documentation file is in progress, for now you can find information in the tutorial:
-https://github.com/Fritkot99/AirfoilToolsBeta
+https://www.youtube.com/watch?v=W6oAKTOyMD4
