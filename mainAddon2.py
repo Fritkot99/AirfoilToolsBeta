@@ -238,7 +238,7 @@ class MakeNaca4digits(bpy.types.Operator):
         global meshname
         global nacaPts
 
-        Pts = NACA4digits(afname, nacaPts+1, Distribution)
+        Pts = NACA4digits(afname, nacaPts, Distribution)
 
         
         meshname = "NACA" + afname
@@ -265,7 +265,7 @@ class MakeNaca5digits(bpy.types.Operator):
         global nacaPts
         
 
-        Pts = NACA5digits(afname5, nacaPts+1, Distribution)
+        Pts = NACA5digits(afname5, nacaPts, Distribution)
   
         meshname = "NACA" + afname5
         return {'FINISHED'}
