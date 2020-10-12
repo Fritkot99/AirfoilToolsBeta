@@ -2,9 +2,13 @@
 Blender addon to import and generate airfoils,
 
 author: Thibaut Francotte
-version: 0.3
+version: 0.4
 
 Disclaimer: this is a beta version, bugs may occur and more features will be added in future updates.
+
+*******changelog from 0.3******
+Solved a bug where for NACA 4-digits airfoils when a camber of 0% was selected the name generator still showed
+the camber location - fixed. 
 
 ______________________general notes__________________________________
 
