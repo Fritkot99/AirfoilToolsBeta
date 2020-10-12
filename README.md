@@ -34,3 +34,8 @@ _________________________Documentation & tutorial_____________________
 
 A full documentation file is in progress, for now you can find information in the tutorial:
 https://www.youtube.com/watch?v=W6oAKTOyMD4
+
+
+Additional tip(s): 
+While cosine points distribution allows to concentrate points toward critical parts of the airfoil,
+it slows down the subdivision surface modifier's performance so watch your point count.
