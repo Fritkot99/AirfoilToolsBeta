@@ -21,7 +21,7 @@ bl_info = {
     "name": "Airfoil Tool",
     "description": "Generate airfoil surface from Naca code or file",
     "author": "Fritkot99",
-    "version":(0,1),
+    "version":(0,4),
     "blender": (2,90,1),
     }
 
@@ -101,9 +101,9 @@ def NACA5digits(digits, N, Distrib):
     t = TT/100.
     
     p_lst = [0.05,0.10,0.15,0.20,0.25] 
-    m_lst = [[0.0580,0.1260,0.2025,0.2900,0.3910], [0.0580,0.1300, 0.2170, 0.3180, 0.4410]]
-    k_lst = [[361.4,51.64,15.957,6.643,3.230], [361.4,51.990, 15.793, 6.520, 3.191]]
-    k2k1_lst = [0.000764,0.000764, 0.00677, 0.0303, 0.1355]
+    m_lst = [[0.0580,0.1260,0.2025,0.2900,0.3910], [0.1300, 0.2170, 0.3180, 0.4410]]
+    k_lst = [[361.4,51.64,15.957,6.643,3.230], [51.990, 15.793, 6.520, 3.191]]
+    k2k1_lst = [0.000764, 0.00677, 0.0303, 0.1355]
     
     x = np.linspace(0,1,int(round(N/2,0))) #unit chord array from 0 to 1
     if Distrib:
@@ -112,7 +112,6 @@ def NACA5digits(digits, N, Distrib):
     reflexed_ind = int(Reflexed)
     
     p_loc = p_lst.index(round(camberloc, 2))
-    print("stuff", p_loc, camberloc)
     k = k_lst[reflexed_ind][p_loc]
     m = m_lst[reflexed_ind][p_loc]
     
@@ -508,7 +507,9 @@ class airfoilClassPanel(Panel):
             row.prop(context.scene, "distribution")
             #print("herenow",nacacamber)
             #print(bpy.context.scene.nacacamber)
-            nacaName = str(bpy.context.scene.nacacamber) + str(int(round(bpy.context.scene.camberloc*10,0))) 
+            nacaName = str(bpy.context.scene.nacacamber) + str(int(round(bpy.context.scene.camberloc*10,0)))
+            if str(bpy.context.scene.nacacamber) =="0":
+                nacaName = "00"
             
             
             thickname = str(bpy.context.scene.nacathickness)
