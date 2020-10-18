@@ -10,7 +10,7 @@ Created on Sun Oct  4 10:26:50 2020
 #import sys
 
 bl_info = {'name' : 'AirfoilTool',
-           'version': (0,  4),
+           'version': (0,  5),
            'blender': (2, 90, 1),
            'description': "Airfoil import/generation tool",
            'author': "Thibaut Francotte"
