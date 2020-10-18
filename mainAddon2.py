@@ -29,10 +29,12 @@ bl_info = {
 def NACA4digits(digits, N, Distrib):
 
     
-    x = np.linspace(0,1,int(round(N/2,0))) #unit chord array from 0 to 1
+    x0 = np.linspace(0,1,int(round(N/2,0))) #unit chord array from 0 to 1
     #print("checkdependency")
-    if Distrib:
-        x = 0.5-0.5*np.cos(x*np.pi)
+    
+    x1 = 0.5-0.5*np.cos(x0*np.pi)
+    
+    x = Distrib*x1+(1-Distrib)*x0
         #print('chckhere')
     # m = 0.02
     # p = 0.4
@@ -93,6 +95,8 @@ def NACA4digits(digits, N, Distrib):
 
 def NACA5digits(digits, N, Distrib):
     
+    
+    #setup parameters
     L, P, S, TT = int(digits[0]), int(digits[1]), int(digits[2]), float(digits[3:])
     
     Cldes = L*0.15
@@ -105,9 +109,17 @@ def NACA5digits(digits, N, Distrib):
     k_lst = [[361.4,51.64,15.957,6.643,3.230], [51.990, 15.793, 6.520, 3.191]]
     k2k1_lst = [0.000764, 0.00677, 0.0303, 0.1355]
     
-    x = np.linspace(0,1,int(round(N/2,0))) #unit chord array from 0 to 1
-    if Distrib:
-        x = 0.5-0.5*np.cos(x*np.pi)
+    
+    #set points array
+    x0 = np.linspace(0,1,int(round(N/2,0))) #unit chord array from 0 to 1
+    #print("checkdependency")
+    
+    x1 = 0.5-0.5*np.cos(x0*np.pi)
+    
+    x = Distrib*x1+(1-Distrib)*x0
+    
+    #start airfoil plotting
+    
         
     reflexed_ind = int(Reflexed)
     
@@ -162,6 +174,7 @@ afname = "2412"
 afname5 = "23012"
 chordLength = 1.0
 meshname = "airfoil"
+planeDraw = 'XY'
 
 
 """------------------------------------------------------File import------------------------------------"""
@@ -271,6 +284,7 @@ class MakeNaca5digits(bpy.types.Operator):
         return {'FINISHED'}
     
     
+"""---------------------------------------------surface generation---------------------------------"""
 class GenerateSurface(bpy.types.Operator):
 
 
@@ -290,6 +304,12 @@ class GenerateSurface(bpy.types.Operator):
         global Faceornot
         global chordLength
         global meshname
+        global planeDraw
+        
+        
+        
+            
+        
         
         PtsNew = Pts*chordLength
    
@@ -307,7 +327,16 @@ class GenerateSurface(bpy.types.Operator):
         run = True
         i = 0
         while run:
-            verts1.append(Vector((PtsNew[i][0], PtsNew[i][1], 0)))
+            if planeDraw == 'XY':
+                verts1.append(Vector((PtsNew[i][0], PtsNew[i][1], 0)))
+            
+            elif planeDraw == 'XZ':
+                verts1.append(Vector((PtsNew[i][0], 0,PtsNew[i][1])))
+                
+            elif planeDraw == 'YZ':
+                verts1.append(Vector((0, PtsNew[i][0],PtsNew[i][1])))
+                
+                
             i+=1
             if i>len(Pts)-1:
                 run = False
@@ -390,16 +419,18 @@ class airfoilClassPanel(Panel):
                                           default = 'Fimp'
                                           )
                                           
-    bpy.types.Scene.distribution= BoolProperty(name = "Cosine points distribution",
+    bpy.types.Scene.distribution= FloatProperty(name = "Cosine points distribution",
                                                description = 'Concentrates points towards leading and trailing edge',
-                                               default = True)
+                                               default = 0.5,
+                                               max = 1.0,
+                                               min = 0.0)
                                                
 
                                                                                                                             
     bpy.types.Scene.nacapoints= IntProperty(
                                           name="Points", 
                                           description="Total points to be used to plot the airfoil",
-                                          default = 201,
+                                          default = 101,
                                           min=1,
                                           max = 500
                                           )
@@ -601,7 +632,15 @@ class airfoilClassPanel2(Panel):
 #    bpy.context.scene.nacacamber = 2
 #    bpy.context.scene.camberloc = 4
 #    bpy.context.scene.nacathickness = 12
-    
+    bpy.types.Scene.planeselect = EnumProperty(
+                                          name = "Plane",
+                                          description = "choose plane",
+                                          items = {('XZ', 'X-Z plane', 'Airfoil on X-Z plane'),
+                                                    ('YZ', 'Y-Z plane','Airfoil on Y-Z plane'),
+                                                    ('XY', 'X-Y plane','Airfoil on X-Y plane')
+                                                    },
+                                          default = 'YZ'
+                                          )
                                                
     bpy.types.Scene.faceornot= BoolProperty(name = "Fill surface",
                                             description = "If selected, the airfoil outline will be filled to make a plane",
@@ -636,6 +675,7 @@ class airfoilClassPanel2(Panel):
         global Distribution
         global Faceornot
         global chordLength
+        global planeDraw
         
         #nacacamber2 = self.nacacamber
         
@@ -655,11 +695,15 @@ class airfoilClassPanel2(Panel):
         row.prop(context.scene, "chordlength")
         row = layout.row()
         
-        
+        row.prop(context.scene, "planeselect")
+        row = layout.row()
         row.operator("ops.generate_surface")
+        
+        
         
         Faceornot = bpy.context.scene.faceornot
         chordLength = bpy.context.scene.chordlength
+        planeDraw = bpy.context.scene.planeselect
    
     
 classes = [airfoilClassPanel,
