@@ -2,9 +2,15 @@
 Blender addon to import and generate airfoils,
 
 author: Thibaut Francotte
-version: 0.4
+version: 0.5
 
 Disclaimer: this is a beta version, bugs may occur and more features will be added in future updates.
+
+*******changelog from 0.4******
+-Replaced the checkbox for cosine points distribution by a float selector, 0 meaning linear distribution and 1 half cosinedistribution.
+-Added an option to select the plane to draw on, so you don't have to constantly rotate the generated surface.
+-Added options to reverse the chord and height direction of the airfoil, in case you want to draw it in the negative axis directions.
+
 
 *******changelog from 0.3******
 Solved a bug where for NACA 4-digits airfoils when a camber of 0% was selected the name generator still showed
