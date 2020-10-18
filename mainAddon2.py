@@ -425,7 +425,7 @@ class airfoilClassPanel(Panel):
                                           
     bpy.types.Scene.distribution= FloatProperty(name = "Cosine points distribution",
                                                description = 'Concentrates points towards leading and trailing edge',
-                                               default = 0.5,
+                                               default = 0.7,
                                                max = 1.0,
                                                min = 0.0)
                                                
