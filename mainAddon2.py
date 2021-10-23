@@ -21,7 +21,7 @@ bl_info = {
     "name": "Airfoil Tool",
     "description": "Generate airfoil surface from Naca code or file",
     "author": "Fritkot99",
-    "version":(0,5),
+    "version":(0,4),
     "blender": (2,90,1),
     }
 
@@ -105,9 +105,9 @@ def NACA5digits(digits, N, Distrib):
     t = TT/100.
     
     p_lst = [0.05,0.10,0.15,0.20,0.25] 
-    m_lst = [[0.0580,0.1260,0.2025,0.2900,0.3910], [0.1300, 0.2170, 0.3180, 0.4410]]
-    k_lst = [[361.4,51.64,15.957,6.643,3.230], [51.990, 15.793, 6.520, 3.191]]
-    k2k1_lst = [0.000764, 0.00677, 0.0303, 0.1355]
+    m_lst = [[0.0580,0.1260,0.2025,0.2900,0.3910], [0.1300, 0.2170, 0.3180, 0.4410, 0.565]]
+    k_lst = [[361.4,51.64,15.957,6.643,3.230], [51.990, 15.793, 6.520, 3.191, 1.914]]
+    k2k1_lst = [0.000764, 0.00677, 0.0303, 0.1355, 0.705399]
     
     
     #set points array
@@ -305,15 +305,11 @@ class GenerateSurface(bpy.types.Operator):
         global chordLength
         global meshname
         global planeDraw
-        global chordDir
-        global thickDir
         
         
-        #make variables to mutliply coordinates with for orientation
-        Xinv = -2*int(chordDir)+1
-        Yinv = -2*int(thickDir)+1
         
-        #print("inversionstuff", Xinv, Yinv)
+            
+        
         
         PtsNew = Pts*chordLength
    
@@ -332,13 +328,13 @@ class GenerateSurface(bpy.types.Operator):
         i = 0
         while run:
             if planeDraw == 'XY':
-                verts1.append(Vector((Xinv*PtsNew[i][0], Yinv*PtsNew[i][1], 0)))
+                verts1.append(Vector((PtsNew[i][0], PtsNew[i][1], 0)))
             
             elif planeDraw == 'XZ':
-                verts1.append(Vector((Xinv*PtsNew[i][0], 0,Yinv*PtsNew[i][1])))
+                verts1.append(Vector((PtsNew[i][0], 0,PtsNew[i][1])))
                 
             elif planeDraw == 'YZ':
-                verts1.append(Vector((0, Xinv*PtsNew[i][0],Yinv*PtsNew[i][1])))
+                verts1.append(Vector((0, PtsNew[i][0],PtsNew[i][1])))
                 
                 
             i+=1
@@ -425,7 +421,7 @@ class airfoilClassPanel(Panel):
                                           
     bpy.types.Scene.distribution= FloatProperty(name = "Cosine points distribution",
                                                description = 'Concentrates points towards leading and trailing edge',
-                                               default = 0.7,
+                                               default = 0.5,
                                                max = 1.0,
                                                min = 0.0)
                                                
@@ -625,7 +621,6 @@ class airfoilClassPanel(Panel):
         
 
 class airfoilClassPanel2(Panel):
-    """class to draw the plotting options of the panel"""
     bpy.types.Scene.naca_or_file = True
     #obj = context.object
     bl_label = "Geometry"
@@ -650,13 +645,6 @@ class airfoilClassPanel2(Panel):
     bpy.types.Scene.faceornot= BoolProperty(name = "Fill surface",
                                             description = "If selected, the airfoil outline will be filled to make a plane",
                                             default = True)
-                                            
-    bpy.types.Scene.chordinv= BoolProperty(name = "Chord",
-                                            description = "This will draw the chord length in the negative direction of the chord axis",
-                                            default = False)
-    bpy.types.Scene.heightinv= BoolProperty(name = "Thickness",
-                                            description = "This will draw the airfoil thickness in the negative direction of the height axis",
-                                            default = False)
                                                                                                                             
     
     
@@ -689,9 +677,6 @@ class airfoilClassPanel2(Panel):
         global chordLength
         global planeDraw
         
-        global chordDir
-        global thickDir
-        
         #nacacamber2 = self.nacacamber
         
         layout = self.layout
@@ -712,11 +697,6 @@ class airfoilClassPanel2(Panel):
         
         row.prop(context.scene, "planeselect")
         row = layout.row()
-        row.label(text="Reverse orientation:")
-        row = layout.row()
-        row.prop(context.scene, "chordinv")
-        row.prop(context.scene, "heightinv")
-        row = layout.row()
         row.operator("ops.generate_surface")
         
         
@@ -724,8 +704,6 @@ class airfoilClassPanel2(Panel):
         Faceornot = bpy.context.scene.faceornot
         chordLength = bpy.context.scene.chordlength
         planeDraw = bpy.context.scene.planeselect
-        chordDir = bpy.context.scene.chordinv
-        thickDir = bpy.context.scene.heightinv
    
     
 classes = [airfoilClassPanel,
