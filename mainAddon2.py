@@ -21,8 +21,8 @@ bl_info = {
     "name": "Airfoil Tool",
     "description": "Generate airfoil surface from Naca code or file",
     "author": "Fritkot99",
-    "version":(0,4),
-    "blender": (2,90,1),
+    "version":(0,6),
+    "blender": (2,93,5),
     }
 
 
